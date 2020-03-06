@@ -1,0 +1,19 @@
+canvas {
+    border: 2px solid black;
+}
+
+.canvCont {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-image: url("images/cat-bg-bw.jpg");
+    background-size: cover;
+    background-position: top;
+    background-repeat: repeat;
+}
+
+.button {
+    display: flex;
+}
+
