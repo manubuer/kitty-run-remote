@@ -50,34 +50,52 @@ window.onload = () => {
   let ctx = canvas.getContext("2d");
 
   let cat = new Image();
-  cat.src = "images/cat-head-transp.png"
-
-  let motorcycle = new Image();
-  motorcycle.src = "images/right size/006-bike.png"
-
-  let car = new Image();
-  car.src = "images/right size/001-car.png"
-
-  let bus = new Image();
-  bus.src = "images/right size/003-bus.png"
-
-  let motorcycleFast = new Image();
-  motorcycleFast.src = "images/right size/motorcycleFast.png"
-
-  let forklift = new Image();
-  forklift.src = "images/right size/001-forklift.png"
-
-  let deliveryTruck = new Image();
-  deliveryTruck.src = "images/right size/002-delivery-truck.png"
-
-  let luft = new Image();
-  luft.src = "images/right size/luft-test.png"
+  cat.src = "images/cat-head-transp.png";
 
   let home = new Image();
-  home.src = "images/right size/003-home.png"
+  home.src = "images/right size/003-home.png";
 
 
-  
+  // vehicles images
+
+  let motorcycle = new Image();
+  motorcycle.src = "images/right size/006-bike.png";
+
+  let car = new Image();
+  car.src = "images/right size/001-car.png";
+
+  let bus = new Image();
+  bus.src = "images/right size/003-bus.png";
+
+  let motorcycleFast = new Image();
+  motorcycleFast.src = "images/right size/motorcycleFast.png";
+
+  let forklift = new Image();
+  forklift.src = "images/right size/001-forklift.png";
+
+  let deliveryTruck = new Image();
+  deliveryTruck.src = "images/right size/002-delivery-truck.png";
+
+
+  //floats images
+
+  let luft = new Image();
+  luft.src = "images/right size/008-inflatable-60.png";
+
+  let luftLR = new Image();
+  luftLR.src = "images/right size/008-inflatable-60-lr.png";
+
+  let box = new Image();
+  box.src = "images/right size/013-wooden-60.png"
+
+  let wood = new Image();
+  wood.src = "images/right size/011-wood-board-60.png"
+
+  let crocodile = new Image();
+  crocodile.src = "images/right size/021-crocodile.png"
+
+
+
 
   // frame counter & obstacle array
 
@@ -92,8 +110,8 @@ window.onload = () => {
     height: 28,
     width: 30,
     image: cat,
-    // lifes: 3,
-    // gameOver: false,
+    lifes: 3,
+    gameOver: false,
 
     moveUp: function() {
       if (player.y > 0) {
@@ -121,8 +139,8 @@ window.onload = () => {
 
     update: function() {
       ctx.drawImage(player.image, player.x, player.y, 30, 30);
-      ctx.strokeStyle = "red"
-      ctx.strokeRect(player.x, player.y, player.width, player.height);
+      // ctx.strokeStyle = "red";
+      // ctx.strokeRect(player.x, player.y, player.width, player.height);
     },
 
     top: function() {
@@ -152,18 +170,25 @@ window.onload = () => {
 
     withinRiver: function(river) {
       return (
-        this.bottom() > river.top() &&
-        this.top() < river.bottom() 
+        this.bottom() > river.top() && 
+        this.top() < river.bottom() &&
+        this.left() + this.width/2 > river.left() && 
+        this.right() - this.width/2 < river.right()
       );
     },
 
-    resetPlayer: function() {
-      this.x = 360;
-      this.y = 570;
-    },
+    die: function() {
+      this.lifes--;
 
+      if (this.lifes > 0) {
+        this.x = 360;
+        this.y = 570;
+        console.log(`You have ${this.lifes} lifes left`);
+      } else {
+        console.log("Game Over");
+      }
+    }
   };
-
 
   // vehicles class and cosntructor
 
@@ -173,8 +198,8 @@ window.onload = () => {
       this.x = posX;
       this.y = posY;
       this.speed = speed;
-      this.height = 28
-      this.width = 30
+      this.height = 28;
+      this.width = 30;
     }
 
     top() {
@@ -192,7 +217,6 @@ window.onload = () => {
 
     update() {
       ctx.drawImage(this.image, this.x, this.y);
-      ctx.strokeRect(this.x, this.y, this.width, this.height);
       this.x -= this.speed;
     }
   }
@@ -203,8 +227,8 @@ window.onload = () => {
       this.x = posX;
       this.y = posY;
       this.speed = speed;
-      this.height = 58  
-      this.width = 120
+      this.height = 28;
+      this.width = 60;
     }
 
     top() {
@@ -222,11 +246,9 @@ window.onload = () => {
 
     update() {
       ctx.drawImage(this.image, this.x, this.y);
-      ctx.strokeRect(this.x, this.y, this.width, this.height);
       this.x -= this.speed;
     }
   }
-
 
   // river object
   let river = {
@@ -236,28 +258,26 @@ window.onload = () => {
     height: 240,
 
     top() {
-      return this.y
+      return this.y;
     },
 
     left() {
-      return this.x 
+      return this.x;
     },
 
     right() {
-      return this.width
+      return this.width;
     },
 
     bottom() {
-      return this.height
-    },
-  }
-
+      return this.height;
+    }
+  };
 
   // start function
   function start() {
     draw();
   }
-
 
   // draw function
   function draw() {
@@ -276,10 +296,17 @@ window.onload = () => {
 
     ctx.strokeStyle = "white";
     ctx.setLineDash([5, 15]);
+
+    ctx.moveTo(0, 360);
+    ctx.lineTo(810, 360);
+    ctx.moveTo(0, 390);
+    ctx.lineTo(810, 390);
+
     ctx.moveTo(0, 480);
     ctx.lineTo(810, 480);
     ctx.moveTo(0, 510);
     ctx.lineTo(810, 510);
+
     ctx.stroke();
 
     //river
@@ -287,102 +314,79 @@ window.onload = () => {
     ctx.fillRect(0, 60, 810, 180);
 
     // home
-    ctx.drawImage(home, 180, 0, 30, 30)
-    ctx.drawImage(home, 390, 0, 30, 30)
-    ctx.drawImage(home, 600, 0, 30, 30)
-    
-    ctx.strokeStyle = "black"
-    ctx.strokeRect(210, 0, 30, 30)
-    ctx.strokeRect(420, 0, 30, 30)
-    ctx.strokeRect(630, 0, 30, 30)
+    ctx.drawImage(home, 180, 0, 30, 30);
+    ctx.drawImage(home, 390, 0, 30, 30);
+    ctx.drawImage(home, 600, 0, 30, 30);
 
-
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(210, 0, 30, 30);
+    ctx.strokeRect(420, 0, 30, 30);
+    ctx.strokeRect(630, 0, 30, 30);
 
     player.update();
-
 
     // obstacle array update & remove
 
     let removal = [];
-
-    // obstacleArray.forEach(function(item) {
-    //   if (player.crashWith(item)) {
-    //     // alert("you lost");
-    //     console.log("you lost")
-    //   }
-    //   item.update();
-    //   if (item.x < 0 - item.width) {
-    //     removal.push(item);
-    //   }
-    // });
-
+    let crahesWithAnyItem = false;
 
     obstacleArray.forEach(function(item) {
-  
-      if (player.crashWith(item) && player.withinRiver(river)) {
-        console.log("you float")
-        player.x -= item.speed
-        // player.update()
-        // item.update()
-      } 
-      
-      else if (player.crashWith(item) && !player.withinRiver(river)) {
-        // alert("you lost");
-        console.log("you die")
-        // player.resetPlayer()
+      if (player.crashWith(item)) {
+        crahesWithAnyItem = true;
+        if (player.withinRiver(river)) {
+          player.x -= item.speed;
+        } else {
+          player.die();
+        }
       }
 
-      else if (!player.crashWith(item) && player.withinRiver(river)) {
-        console.log("you drown")
-        // player.resetPlayer()
-      } 
-
-     
-
       item.update();
-      
-      if (item.x < 0 - item.width) {
+
+      if (item.x < -300 || item.x > 1200) {
         removal.push(item);
       }
     });
 
+    if (player.withinRiver(river)) {
+      if (!crahesWithAnyItem) {
+        player.die();
+      }
+    }
 
-
-
-
-
-
-
-
-
-    obstacleArray = obstacleArray.filter(e => !removal.includes(e))
+    obstacleArray = obstacleArray.filter(e => !removal.includes(e));
 
     player.update();
+
+    // draw moving things
 
     if (frameCounter % 120 === 0) {
       console.log(obstacleArray.length);
 
-      // // put objects on upper lane
-      obstacleArray.push(new Vehicles(canvas.width, 330, forklift, 2))
-      obstacleArray.push(new Vehicles(canvas.width, 390, motorcycleFast, 12))
-      obstacleArray.push(new Vehicles(canvas.width, 360, bus, 6))
-      obstacleArray.push(new Vehicles(canvas.width+400, 360, deliveryTruck, 6))
+      // on river
+      obstacleArray.push(new Floats(canvas.width, 60, wood, 2));
+      obstacleArray.push(new Floats(canvas.width, 90, box, 6));
+      obstacleArray.push(new Floats(0, 120, luftLR, -3));
+      obstacleArray.push(new Floats(-150, 120, crocodile, -3));
+      obstacleArray.push(new Floats(canvas.width, 150, wood, 4));
+      obstacleArray.push(new Floats(canvas.width, 180, box, 3));
+      obstacleArray.push(new Floats(0, 210, luftLR, -5));
 
-      // put objects on lower lane
-      obstacleArray.push(new Vehicles(0, 450, car, -1));
-      obstacleArray.push(new Vehicles(0, 480, motorcycle, -2));
+      // on upper lane
+      obstacleArray.push(new Vehicles(canvas.width, 330, forklift, 2));
+      obstacleArray.push(new Vehicles(canvas.width, 390, motorcycleFast, 12));
+      obstacleArray.push(new Vehicles(canvas.width, 360, bus, 6));
+      obstacleArray.push(new Vehicles(canvas.width + 400, 360, deliveryTruck, 6)
+      );
+
+      // on lower lane
+      obstacleArray.push(new Vehicles(0, 450, car, -5));
+      obstacleArray.push(new Vehicles(0, 480, motorcycle, -3));
       obstacleArray.push(new Vehicles(canvas.width, 510, deliveryTruck, 6));
-
-      // put objects on river
-      obstacleArray.push(new Floats(canvas.width, 60, luft, 2));
-      obstacleArray.push(new Floats(canvas.width, 120, luft, 6));
-      obstacleArray.push(new Floats(0, 180, luft, -3));
     }
 
     setTimeout(function() {
       window.requestAnimationFrame(draw);
     }, 1000 / 24);
-    
   }
 
   // keys
