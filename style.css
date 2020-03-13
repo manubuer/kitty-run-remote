@@ -1,24 +1,32 @@
-canvas {
-    border: 4px solid #514dff;
-}
+
 
 body {
-    /* background-image: url("images/cat-bg-blue-dots-large.jpg"); */
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: top;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    position: absolute;
-    background-color: white;
+  /* background-color: white; */
+  background-image: url("images/cat-bg-blue-dots-large.jpg");
 }
 
-.header {
-    background-color: white;
+img {
+  max-height: 120px;
 }
 
-.side {
-    background-color: white;
-    border: 4px solid #514dff;
+#gameRow {
+  background-color: white;
+}
+
+.border-dark {
+  border-color: #444cfa !important;
+  border-width: 2px !important;
+  background-color: white !important;
+}
+
+h3 {
+  color: #444cfa;
+}
+
+h4 {
+  color: #444cfa;
+}
+
+h5 {
+  color: #444cfa;
 }
