@@ -98,6 +98,17 @@ window.onload = () => {
   let crocodile = new Image();
   crocodile.src = "images/right size/021-crocodile.png";
 
+  // humans & things
+
+  let rentner = new Image();
+  rentner.src = "images/right size/005-walker.png"
+
+  let baby = new Image();
+  baby.src = "images/right size/006-toddler.png"
+
+  let cucumber = new Image();
+  cucumber.src = "images/right size/016-cucumber.png"
+
   // audio 
 
   let step = new Audio();
@@ -120,7 +131,7 @@ window.onload = () => {
     height: 28,
     width: 30,
     image: cat,
-    lifes: 3,
+    lifes: 7,
     time: 60,
     catsSaved: 0,
     gameOver: false,
@@ -377,7 +388,7 @@ window.onload = () => {
 
   function start() {
 
-    player.lifes = 3;
+    player.lifes = 7;
     player.time = 60;
     player.catsSaved = 0;
     player.gameOver = false;
@@ -431,7 +442,7 @@ window.onload = () => {
 
       player.update();
 
-      // at home
+      // cats at home
 
       let homesArray = [home1, home2, home3];
 
@@ -499,6 +510,12 @@ window.onload = () => {
         obstacleArray.push(new Vehicles(0, 450, car, -5));
         obstacleArray.push(new Vehicles(0, 480, motorcycle, -3));
         obstacleArray.push(new Vehicles(canvas.width, 510, deliveryTruck, 6));
+
+        // additional obstacles
+        // obstacleArray.push(new Vehicles(600, 30, rentner, 0));
+        // obstacleArray.push(new Vehicles(600, 300, cucumber, 2));
+        // obstacleArray.push(new Vehicles(0, 270, baby, -1));
+
       }
 
       // setTimeout(function() {
