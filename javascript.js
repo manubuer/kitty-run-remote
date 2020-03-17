@@ -116,7 +116,7 @@ window.onload = () => {
     width: 30,
     image: cat,
     lifes: 4,
-    time: 40,
+    time: 60,
     catsSaved: 0,
     gameOver: false,
 
@@ -378,7 +378,7 @@ window.onload = () => {
 
     let counter = setInterval(interval => {
       player.time--;
-      if (player.time <= 0 || player.lifes === 0) {
+      if (player.time <= 0 || player.lifes === 0 || player.catsSaved === 3) {
         clearInterval(counter);
       }
       document.getElementById("timeId").innerText = player.time;
