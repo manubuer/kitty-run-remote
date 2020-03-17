@@ -44,6 +44,7 @@ window.onload = () => {
 
   document.getElementById("start-button").onclick = () => {
     start();
+    
   };
 
   // images load & create variables
@@ -102,6 +103,10 @@ window.onload = () => {
   let step = new Audio();
   step.src = "audio/Frog.aiff"
 
+
+
+
+
   // frame counter & obstacle array
 
   let obstacleArray = [];
@@ -115,7 +120,7 @@ window.onload = () => {
     height: 28,
     width: 30,
     image: cat,
-    lifes: 4,
+    lifes: 3,
     time: 60,
     catsSaved: 0,
     gameOver: false,
@@ -371,6 +376,14 @@ window.onload = () => {
   // start function
 
   function start() {
+
+    player.lifes = 3;
+    player.time = 60;
+    player.catsSaved = 0;
+    player.gameOver = false;
+
+    document.getElementById("timeId").innerText = player.time;
+    document.getElementById("lifesId").innerText = player.lifes;
     
     draw();
 
