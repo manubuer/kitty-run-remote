@@ -14,12 +14,12 @@
 
 <body>
 
-  <div class="container-fluid mt-5">
+  <div class="container-fluid mt-2">
 
-    <div class="container shadow-lg border border-dark rounded p-3" id="gameRow">
+    <div class="container shadow-lg border border-dark rounded" id="gameRow">
 
 
-      <div class="row align-items-center">
+      <div class="row">
 
         <div class="col">
 
@@ -27,55 +27,86 @@
             <img class="img-fluid" src="images/kitty-run-logo-trans.png" alt="kitty-run-logo">
           </div>
 
-          <div class="col my-3">
-            <button type="button" class="col btn btn-dark" id="start-button">BRING THE KITTY HOME</button>
+          <div class="row my-3">
+            <div class="container">
+            <button type="button" class="col btn-sm btn-dark" id="start-button">START</button>
+          </div>
           </div>
 
           <div class="col col-lg-12 my-3 pt-2 rounded border border-dark" id="instructions">
-            <h5 class="font-weight-bold text-left"><ins>INSTRUCTIONS</ins></h5>
-            <h5>MOVE</h5>
-            <img src="images/right size/keyboard-small.png" alt="keyboard" class="img-fluid">
+            <div class="container">
+              <!-- <h5 class="font-weight-bold text-left"><ins>INSTRUCTIONS</ins></h5> -->
+              <div class="row">
+                <h6>MOVE
+                  <small class="text-muted">Use arrow keys</small>
+                </h6>
+                
+              </div>
+              <div class="row mb-2">
+                <img src="images/right size/keyboard-small.png" alt="keyboard" class="img-fluid mr-2">
+              </div>
 
-            <h5>WIN</h5>
-            <img src="images/right size/003-home.png" alt="home" class="img-fluid">
-            <img src="images/cat-head-transp.png" alt="cat head" class="img-fluid">
-            <img src="images/right size/003-home.png" alt="home" class="img-fluid">
-            <img src="images/cat-head-transp.png" alt="cat head" class="img-fluid">
-            <img src="images/right size/003-home.png" alt="home" class="img-fluid">
-            <img src="images/cat-head-transp.png" alt="cat head" class="img-fluid">
+              <div class="row">
+                <h6>AVOID
+                  <small class="text-muted">Traffic, water, humans</small>
+                </h6>
+              </div>
+              <div class="row mb-2">
+                <img src="images/right size/do-not-swim-sign.png" alt="dont swim" class="img-fluid mr-2">
+                <img src="images/right size/motorcycleFast-inverted.png" alt="motorcycle" class="img-fluid mr-2">
+                <img src="images/right size/001-car-inverted.png" alt="car" class="img-fluid mr-2">
+                <img src="images/right size/006-toddler.png" alt="toddler" class="img-fluid mr-2">
+                <img src="images/right size/005-walker.png" alt="walker" class="img-fluid mr-2">
+              </div>
 
-            <h5>AVOID</h5>
-            <img src="images/right size/do-not-swim-sign.png" alt="dont swim" class="img-fluid">
-            <img src="images/right size/motorcycleFast-inverted.png" alt="motorcycle" class="img-fluid">
-            <img src="images/right size/001-car-inverted.png" alt="car" class="img-fluid">
-            <img src="images/right size/006-toddler.png" alt="toddler" class="img-fluid">
-            <img src="images/right size/005-walker.png" alt="walker" class="img-fluid">
+              <div class="row">
+                <h6>USE
+                  <small class="text-muted">Floating items on river</small>
+                </h6>
+                
+              </div>
+              <div class="row mb-2">
+                <img src="images/right size/008-inflatable-60-lr-inv.png" alt="inflatable" class="img-fluid mr-2">
+                <img src="images/right size/012-wooden-box-60-inv.png" alt="box" class="img-fluid mr-2">
+                <img src="images/right size/011-wood-board-60-inv.png" alt="wood" class="img-fluid mr-2">
+              </div>
+
+              <div class="row">
+                <h6>WIN
+                  <small class="text-muted">3 kitties in homes </small>
+                </h6>
+              </div>
+              <div class="row mb-3">
+                <img src="images/right size/003-home.png" alt="home" class="img-fluid">
+                <img src="images/cat-head-transp.png" alt="cat head" class="img-fluid mr-2">
+                <img src="images/right size/003-home.png" alt="home" class="img-fluid">
+                <img src="images/cat-head-transp.png" alt="cat head" class="img-fluid mr-2">
+                <img src="images/right size/003-home.png" alt="home" class="img-fluid">
+                <img src="images/cat-head-transp.png" alt="cat head" class="img-fluid mr-2">
+              </div>
+            </div>
           </div>
 
           <div class="col col-lg-12 my-3 pt-2 rounded border border-dark">
-            <h5 class="font-weight-bold text-left"><ins>GAME STATS</ins></h5>
-
-            <dl class="row">
-              <dt class="col-sm-3">
+            <!-- <h5 class="font-weight-bold text-left"><ins>GAME STATS</ins></h5> -->
+            <div class="row">
+              <div class="col text-center">
                 <h5>LIFES</h5>
-              </dt>
-              <dd class="col-sm-9">4</dd>
-
-              <dt class="col-sm-3">
-                <h5>LEVEL</h5>
-              </dt>
-              <dd class="col-sm-9">3</dd>
-
-              <dt class="col-sm-3">
+                <h3 id="lifesId"></h3>
+              </div>
+              <div class="col text-center">
                 <h5>TIME</h5>
-              </dt>
-              <dd class="col-sm-9">01:20</dd>
-            </dl>
+                <h3 id="timeId"></h3>
+              </div>
+            </div>
           </div>
+          <p class="credits">
+            All icons made by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> from <a href="http://www.flaticon.com">www.flaticon.com</a>.
+          </p>
 
         </div>
 
-        <div class="col order-first justify-content-center">
+        <div class="col order-first text-center pt-3">
           <canvas class="rounded border border-dark" width="810" height="600"></canvas>
         </div>
 

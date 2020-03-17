@@ -3,6 +3,7 @@
 body {
   /* background-color: white; */
   background-image: url("images/cat-bg-blue-dots-large.jpg");
+  background-size: cover;
 }
 
 img {
@@ -15,7 +16,7 @@ img {
 
 .border-dark {
   border-color: #444cfa !important;
-  border-width: 2px !important;
+  border-width: 3px !important;
   background-color: white !important;
 }
 
@@ -29,4 +30,12 @@ h4 {
 
 h5 {
   color: #444cfa;
+}
+
+h6 {
+  color: #444cfa;
+}
+
+.credits {
+  font-size: 10px;
 }
