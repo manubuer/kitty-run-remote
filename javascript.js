@@ -1,5 +1,3 @@
-
-
 window.onload = () => {
   let canvas = document.querySelector("canvas");
   let ctx = canvas.getContext("2d");
@@ -44,7 +42,6 @@ window.onload = () => {
 
   document.getElementById("start-button").onclick = () => {
     start();
-    
   };
 
   // images load & create variables
@@ -101,22 +98,42 @@ window.onload = () => {
   // humans & things
 
   let rentner = new Image();
-  rentner.src = "images/right size/005-walker.png"
+  rentner.src = "images/right size/005-walker.png";
 
   let baby = new Image();
-  baby.src = "images/right size/006-toddler.png"
+  baby.src = "images/right size/006-toddler.png";
 
   let cucumber = new Image();
-  cucumber.src = "images/right size/016-cucumber.png"
+  cucumber.src = "images/right size/016-cucumber.png";
 
-  // audio 
+  // audio
 
-  let step = new Audio();
-  step.src = "audio/Frog.aiff"
+  let music = new Audio("audio/kitty-run-music.mp3");
+  let meow = new Audio("audio/Cat_Meowing_2-Mr_Smith-780889994.wav");
 
+  function playSoundVert() {
+    let snd = new Audio("audio/move4.wav");
+    snd.play();
+  }
 
+  function playSoundHor() {
+    let sound = new Audio("audio/move2.wav");
+    sound.play();
+  }
 
+  function playSoundTraffic() {
+    if (player.top() <= 540 && player.top() >= 330) {
+      let traffic = new Audio("audio/Traffic_Jam-Yo_Mama-1164700013.wav");
+      traffic.play();
+    }
+  }
 
+  function playSoundRiver() {
+    if (player.top() <= 240 && player.top() >= 60) {
+      let river = new Audio("audio/Stream Noise-SoundBible.com-866411702.wav");
+      river.play();
+    }
+  }
 
   // frame counter & obstacle array
 
@@ -140,24 +157,32 @@ window.onload = () => {
       if (player.y > 0) {
         player.y -= 30;
       }
+      playSoundVert();
+      playSoundTraffic();
+      playSoundRiver();
     },
 
     moveDown: function() {
       if (player.y < canvas.height - 40) {
         player.y += 30;
       }
+      playSoundVert();
+      playSoundTraffic();
+      playSoundRiver();
     },
 
     moveLeft: function() {
       if (player.x > 0) {
         player.x -= 30;
       }
+      playSoundHor();
     },
 
     moveRight: function() {
       if (player.x < canvas.width - 30) {
         player.x += 30;
       }
+      playSoundHor();
     },
 
     update: function() {
@@ -199,8 +224,8 @@ window.onload = () => {
     },
 
     die: function() {
-      
       this.lifes--;
+      meow.play();
 
       document.getElementById("lifesId").innerText = this.lifes;
 
@@ -213,11 +238,10 @@ window.onload = () => {
     },
 
     reset: function() {
-
       this.x = 360;
       this.y = 570;
       this.gameOver = false;
-    },
+    }
   };
 
   document.getElementById("timeId").innerText = player.time;
@@ -307,82 +331,41 @@ window.onload = () => {
     }
   };
 
-  // homes objects
+  // home class & objects
 
-  let home1 = {
-    x: 180,
-    y: 0,
-    width: 60,
-    height: 30,
-    img: cat,
-    occupied: false,
+  class Home {
+    constructor(posX, posY) {
+      this.x = posX;
+      this.y = posY;
+      this.width = 60;
+      this.height = 30;
+      this.img = cat;
+      this.occupied = false;
+    }
 
-    left: function() {
+    left() {
       return this.x + 5;
-    },
+    }
 
-    right: function() {
+    right() {
       return this.x + this.width - 5;
-    },
+    }
 
-    top: function() {
+    top() {
       return this.y;
-    },
+    }
 
-    bottom: function() {
+    bottom() {
       return this.y + this.height - 5;
     }
-  };
+  }
 
-  let home2 = {
-    x: 390,
-    y: 0,
-    width: 60,
-    height: 30,
-    img: cat,
-    occupied: false,
+  let home1 = new Home(180, 0)
+  let home2 = new Home(390, 0)
+  let home3 = new Home(600, 0)
 
-    left: function() {
-      return this.x + 5;
-    },
-
-    right: function() {
-      return this.x + this.width - 5;
-    },
-
-    top: function() {
-      return this.y;
-    },
-
-    bottom: function() {
-      return this.y + this.height - 5;
-    }
-  };
-
-  let home3 = {
-    x: 600,
-    y: 0,
-    width: 60,
-    height: 30,
-    img: cat,
-    occupied: false,
-
-    left: function() {
-      return this.x + 5;
-    },
-
-    right: function() {
-      return this.x + this.width - 5;
-    },
-
-    top: function() {
-      return this.y;
-    },
-
-    bottom: function() {
-      return this.y + this.height - 5;
-    }
-  };
+  let homesArray = [home1, home2, home3];
+  
 
   // start function
 
@@ -395,10 +378,11 @@ window.onload = () => {
 
     document.getElementById("timeId").innerText = player.time;
     document.getElementById("lifesId").innerText = player.lifes;
-    
+
+    music.play();
     draw();
 
-  // counter
+    // counter
 
     let counter = setInterval(interval => {
       player.time--;
@@ -412,119 +396,8 @@ window.onload = () => {
   // draw function
   function draw() {
 
-    if (player.gameOver == false) {
+    if (player.gameOver === true) {
 
-      frameCounter++;
-
-      ctx.drawImage(background, 0, 0, 810, 600);
-      ctx.drawImage(waves, 20, 70, 32, 32);
-
-      ctx.drawImage(home, 180, 0, 28, 28);
-      ctx.drawImage(home, 390, 0, 28, 28);
-      ctx.drawImage(home, 600, 0, 28, 28);
-
-      ctx.strokeStyle = "black";
-      ctx.strokeRect(210, 0, 28, 28);
-      ctx.strokeRect(420, 0, 28, 28);
-      ctx.strokeRect(630, 0, 28, 28);
-
-      if (home1.occupied === true) {
-        ctx.drawImage(home1.img, home1.left() + 25, home1.top(), 30, 30);
-      }
-
-      if (home2.occupied === true) {
-        ctx.drawImage(home2.img, home2.left() + 25, home2.top(), 30, 30);
-      }
-
-      if (home3.occupied === true) {
-        ctx.drawImage(home3.img, home3.left() + 25, home3.top(), 30, 30);
-      }
-
-      player.update();
-
-      // cats at home
-
-      let homesArray = [home1, home2, home3];
-
-      homesArray.forEach(function(home) {
-        if (player.crashWith(home) && home.occupied === false) {
-          player.catsSaved++;
-          home.occupied = true;
-          player.reset();
-        }
-      });
-
-
-      // obstacle array update & remove
-
-      let removal = [];
-      let crahesWithAnyItem = false;
-
-      obstacleArray.forEach(function(item) {
-        if (player.crashWith(item)) {
-          crahesWithAnyItem = true;
-          if (player.withinRiver(river)) {
-            player.x -= item.speed;
-          } else {
-            player.die();
-          }
-        }
-
-        item.update();
-
-        if (item.x < -300 || item.x > 1200) {
-          removal.push(item);
-        }
-      });
-
-      if (player.withinRiver(river)) {
-        if (!crahesWithAnyItem) {
-          player.die();
-        }
-      }
-
-      obstacleArray = obstacleArray.filter(e => !removal.includes(e));
-
-      player.update();
-
-      // draw moving things
-
-      if (frameCounter % 120 === 0) {
-
-        // on river
-        obstacleArray.push(new Floats(canvas.width, 60, wood, 2));
-        obstacleArray.push(new Floats(canvas.width, 90, box, 6));
-        obstacleArray.push(new Floats(0, 120, luftLR, -3));
-        obstacleArray.push(new Floats(canvas.width, 150, wood, 4));
-        obstacleArray.push(new Floats(canvas.width, 180, box, 3));
-        obstacleArray.push(new Floats(0, 210, luftLR, -5));
-
-        // on upper lane
-        obstacleArray.push(new Vehicles(canvas.width, 330, forklift, 2));
-        obstacleArray.push(new Vehicles(canvas.width, 390, motorcycleFast, 12));
-        obstacleArray.push(new Vehicles(canvas.width, 360, bus, 6));
-        obstacleArray.push(new Vehicles(canvas.width + 400, 360, deliveryTruck, 6)
-        );
-
-        // on lower lane
-        obstacleArray.push(new Vehicles(0, 450, car, -5));
-        obstacleArray.push(new Vehicles(0, 480, motorcycle, -3));
-        obstacleArray.push(new Vehicles(canvas.width, 510, deliveryTruck, 6));
-
-        // additional obstacles
-        // obstacleArray.push(new Vehicles(600, 30, rentner, 0));
-        // obstacleArray.push(new Vehicles(600, 300, cucumber, 2));
-        // obstacleArray.push(new Vehicles(0, 270, baby, -1));
-
-      }
-
-      // setTimeout(function() {
-      window.requestAnimationFrame(draw);
-      // }, 1000 / 24);
-    }
-
-    // game over
-    else {
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, 810, 600);
       ctx.font = "60px Arial";
@@ -535,11 +408,107 @@ window.onload = () => {
       ctx.fillText("*You suck! - The Cats", 480, 330);
 
       player.reset();
+      return;
     }
 
-    // game win
-    if (player.catsSaved === 3) {
+    frameCounter++;
 
+    ctx.drawImage(background, 0, 0, 810, 600);
+    ctx.drawImage(waves, 20, 70, 32, 32);
+
+    ctx.drawImage(home, 180, 0, 28, 28);
+    ctx.drawImage(home, 390, 0, 28, 28);
+    ctx.drawImage(home, 600, 0, 28, 28);
+
+    ctx.strokeStyle = "black";
+    ctx.strokeRect(210, 0, 28, 28);
+    ctx.strokeRect(420, 0, 28, 28);
+    ctx.strokeRect(630, 0, 28, 28);
+
+    // cats in homes
+
+    // homesArray.forEach(function(home) {
+    //   if (home.occupied === true) {
+    //     ctx.drawImage(home.img, home.left() + 25, home.top(), 30, 30);
+    //   }
+    // });
+
+    player.update();
+
+    homesArray.forEach(function(home) {
+      
+      if (player.crashWith(home) && home.occupied === false) {
+        player.catsSaved++;
+        home.occupied = true;
+        player.reset();
+      }
+
+      if (home.occupied === true) {
+        ctx.drawImage(home.img, home.left() + 25, home.top(), 30, 30);
+      }
+    });
+
+    // obstacle array update & remove
+
+    let removal = [];
+    let crahesWithAnyItem = false;
+
+    obstacleArray.forEach(function(item) {
+      if (player.crashWith(item)) {
+        crahesWithAnyItem = true;
+        if (player.withinRiver(river)) {
+          player.x -= item.speed;
+        } else {
+          player.die();
+        }
+      }
+
+      item.update();
+
+      if (item.x < -300 || item.x > 1200) {
+        removal.push(item);
+      }
+    });
+
+    if (player.withinRiver(river)) {
+      if (!crahesWithAnyItem) {
+        player.die();
+      }
+    }
+
+    obstacleArray = obstacleArray.filter(e => !removal.includes(e));
+
+    player.update();
+
+    // draw moving things
+
+    if (frameCounter % 120 === 0) {
+      // on river
+      obstacleArray.push(new Floats(canvas.width, 60, wood, 2));
+      obstacleArray.push(new Floats(canvas.width, 90, box, 6));
+      obstacleArray.push(new Floats(0, 120, luftLR, -3));
+      obstacleArray.push(new Floats(canvas.width, 150, wood, 4));
+      obstacleArray.push(new Floats(canvas.width, 180, box, 3));
+      obstacleArray.push(new Floats(0, 210, luftLR, -5));
+
+      // on upper lane
+      obstacleArray.push(new Vehicles(canvas.width, 330, forklift, 2));
+      obstacleArray.push(new Vehicles(canvas.width, 390, motorcycleFast, 12));
+      obstacleArray.push(new Vehicles(canvas.width, 360, bus, 6));
+      obstacleArray.push(new Vehicles(canvas.width + 400, 360, deliveryTruck, 6));
+
+      // on lower lane
+      obstacleArray.push(new Vehicles(0, 450, car, -5));
+      obstacleArray.push(new Vehicles(0, 480, motorcycle, -3));
+      obstacleArray.push(new Vehicles(canvas.width, 510, deliveryTruck, 6));
+
+      // additional obstacles
+      // obstacleArray.push(new Vehicles(600, 30, rentner, 0));
+      // obstacleArray.push(new Vehicles(600, 300, cucumber, 2));
+      // obstacleArray.push(new Vehicles(0, 270, baby, -1));
+    }
+
+    if (player.catsSaved === 3) {
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, 810, 600);
       ctx.font = "60px Arial";
@@ -548,24 +517,32 @@ window.onload = () => {
 
       ctx.font = "10px Arial";
       ctx.fillText("*We think your're great - The Cats", 430, 330);
+
+      homesArray.forEach(home => home.occupied = false)
+
+      return;
+    }
+
+    // setTimeout(function() {
+    window.requestAnimationFrame(draw);
+    // }, 1000 / 24);
   }
 
-    // keys
-    document.onkeydown = function(e) {
-      switch (e.keyCode) {
-        case 37:
-          player.moveLeft();
-          break;
-        case 38:
-          player.moveUp();
-          break;
-        case 39:
-          player.moveRight();
-          break;
-        case 40:
-          player.moveDown();
-          break;
-      }
-    };
-  }
+  // keys
+  document.onkeydown = function(e) {
+    switch (e.keyCode) {
+      case 37:
+        player.moveLeft();
+        break;
+      case 38:
+        player.moveUp();
+        break;
+      case 39:
+        player.moveRight();
+        break;
+      case 40:
+        player.moveDown();
+        break;
+    }
+  };
 };
