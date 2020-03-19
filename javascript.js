@@ -35,7 +35,7 @@ window.onload = () => {
     440
   );
   ctx.fillText(
-    "as well as a time counter. If it hits 0 before the cats are safe, you screwed up. And yes, cats do have 7 lifes, just don't ask.",
+    "as well as a time counter. If it hits 0 before the cats are safe, you screwed up. And yes, cats do have 7 lifes, just don't ask. Now, play already!",
     85,
     450
   );
@@ -100,6 +100,9 @@ window.onload = () => {
 
   let rentner = new Image();
   rentner.src = "images/005-walker.png";
+
+  let rentner2 = new Image();
+  rentner2.src = "images/005-walker-inverted.png"
 
   let baby = new Image();
   baby.src = "images/006-toddler.png";
@@ -174,8 +177,8 @@ window.onload = () => {
     width: 30,
     image: cat,
     lifes: 7,
-    time: 60,
-    catsSaved: 2,
+    time: 90,
+    catsSaved: 0,
     gameOver: false,
     gameRunning: false,
 
@@ -375,8 +378,8 @@ window.onload = () => {
   function start() {
 
     player.lifes = 7;
-    player.time = 60;
-    player.catsSaved = 1;
+    player.time = 90;
+    player.catsSaved = 0;
     player.gameOver = false;
     player.gameRunning = true;
 
@@ -385,6 +388,7 @@ window.onload = () => {
 
     music.play();
     music.loop = true;
+
     draw();
 
     // counter
@@ -396,7 +400,7 @@ window.onload = () => {
       }
       if (player.time === 0) {
         clearInterval(counter)
-        player.die()
+        player.gameOver = true
       }
       document.getElementById("timeId").innerText = player.time;
     }, 1000);
@@ -416,20 +420,20 @@ window.onload = () => {
       ctx.font = "10px Arial";
       ctx.fillText("*You suck! - The Cats", 480, 330);
 
-      player.reset();
-
       music.pause();
       music.currentTime = 0;
-
       riverSound.pause()
       riverSound.currentTime = 0;
-
       traffic.pause()
       traffic.currentTime = 0;
 
       homesArray.forEach(home => home.occupied = false)
+      player.catsSaved = 0
 
+      player.reset();
       player.gameRunning = false
+
+      obstacleArray = []
 
       return;
     }
@@ -499,13 +503,11 @@ window.onload = () => {
 
     player.update();
 
-
     // draw moving things (x, y, img, speed, width)
     // upper lane: 330 - 390; lower lane: 450 - 510; river: 60 - 210
 
     if (frameCounter % (120 + (player.catsSaved * 40)) === 0) {
 
-      // river
       obstacleArray.push(new Vehicle(canvas.width, 60, wood, 2 + player.catsSaved, 60));
       obstacleArray.push(new Vehicle(canvas.width, 90, box, 3 - player.catsSaved, 60));
       obstacleArray.push(new Vehicle(0, 120, luftLR, -3 - player.catsSaved, 60));
@@ -518,43 +520,37 @@ window.onload = () => {
 
       obstacleArray.push(new Vehicle(0, 450, car, -5 - player.catsSaved, 30)); 
       obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 12, 30));
-
       obstacleArray.push(new Vehicle(canvas.width, 330, forklift, 3 + player.catsSaved, 30));
       obstacleArray.push(new Vehicle(0, 480, motorcycle, -3, 30));   
     }
 
     if (frameCounter % 40 === 0) {
 
-      // upper lane
       obstacleArray.push(new Vehicle(canvas.width, 390, bus, 6 + player.catsSaved, 30));
       obstacleArray.push(new Vehicle(canvas.width + 400, 390, deliveryTruck, 6 - player.catsSaved, 30));
-
-      //on lower lane
       obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 6 + player.catsSaved, 30));
     }
 
-    if (frameCounter % 60 === 0 && player.catsSaved === 1) {      
-      obstacleArray.push(new Vehicle(320, 0, cucumber, 0, 30));
-      obstacleArray.push(new Vehicle(480, 0, cucumber, 0, 30));
-      
+    if (frameCounter % 60 === 0 && player.catsSaved > 0) {      
+      obstacleArray.push(new Vehicle(320, 30, cucumber, 0, 30));
+      obstacleArray.push(new Vehicle(480, 30, cucumber, 0, 30));
+      obstacleArray.push(new Vehicle(480, 270, cucumber, 0, 30));
     }
 
-    if (frameCounter % 960 === 0 && player.catsSaved > 0) {
-      obstacleArray.push(new Vehicle(canvas.width, 30, rentner, 0.5, 30));
-      obstacleArray.push(new Vehicle(0, 420, snake, -2, 30));
-      // obstacleArray.push(new Vehicle(500, 420, baby, 0, 30));
+    if (frameCounter % 240 === 0 && player.catsSaved > 0) {
+      obstacleArray.push(new Vehicle(-100, 420, snake, -3, 30));
     }
 
+    if (frameCounter % 480 === 0 && player.catsSaved > 0) {
+      obstacleArray.push(new Vehicle(-30, 240, snake, -4, 30));
+    }
 
-
-
-    // if (frameCounter % 120 === 0 && player.catsSaved === 1) {
-    //   // additional obstacles
-    //   obstacleArray.push(new Vehicle(canvas.width + 50, 30, rentner, 1));
-    //   obstacleArray.push(new Vehicle(200, 0, cucumber, 0));
-    //   obstacleArray.push(new Vehicle(400, 0, cucumber, 0));
-    //   obstacleArray.push(new Vehicle(0, 270, baby, -1));
-    // }
+    if (frameCounter % 240 === 0 && player.catsSaved > 1) {
+      obstacleArray.push(new Vehicle(300, 270, baby, 0, 30));
+      obstacleArray.push(new Vehicle(-100, 300, baby, -1, 30));
+      obstacleArray.push(new Vehicle(canvas.width + 200, 30, rentner, 0.4, 30));
+      obstacleArray.push(new Vehicle(-60, 30, rentner2, -0.3, 30));
+    }
 
     // check win
 
