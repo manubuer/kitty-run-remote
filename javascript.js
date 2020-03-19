@@ -41,6 +41,7 @@ window.onload = () => {
   );
 
   document.getElementById("start-button").onclick = () => {
+    buttonPush.play()
     start();
   };
 
@@ -50,88 +51,109 @@ window.onload = () => {
   background.src = "images/canvas-background.png";
 
   let waves = new Image();
-  waves.src = "images/wave.png";
+  waves.src = "images/wave-inverted.png";
 
   let cat = new Image();
   cat.src = "images/cat-head-transp.png";
 
   let home = new Image();
-  home.src = "images/right size/003-home.png";
+  home.src = "images/003-home.png";
 
   // vehicles images
 
   let motorcycle = new Image();
-  motorcycle.src = "images/right size/006-bike.png";
+  motorcycle.src = "images/006-bike.png";
 
   let car = new Image();
-  car.src = "images/right size/001-car.png";
+  car.src = "images/001-car.png";
 
   let bus = new Image();
-  bus.src = "images/right size/003-bus.png";
+  bus.src = "images/003-bus.png";
 
   let motorcycleFast = new Image();
-  motorcycleFast.src = "images/right size/motorcycleFast.png";
+  motorcycleFast.src = "images/motorcycleFast.png";
 
   let forklift = new Image();
-  forklift.src = "images/right size/001-forklift.png";
+  forklift.src = "images/001-forklift.png";
 
   let deliveryTruck = new Image();
-  deliveryTruck.src = "images/right size/002-delivery-truck.png";
+  deliveryTruck.src = "images/002-delivery-truck.png";
 
   //floats images
 
   let luft = new Image();
-  luft.src = "images/right size/008-inflatable-60.png";
+  luft.src = "images/008-inflatable-60.png";
 
   let luftLR = new Image();
-  luftLR.src = "images/right size/008-inflatable-60-lr.png";
+  luftLR.src = "images/008-inflatable-60-lr.png";
 
   let box = new Image();
-  box.src = "images/right size/013-wooden-60.png";
+  box.src = "images/013-wooden-60.png";
 
   let wood = new Image();
-  wood.src = "images/right size/011-wood-board-60.png";
+  wood.src = "images/011-wood-board-60.png";
 
   let crocodile = new Image();
-  crocodile.src = "images/right size/021-crocodile.png";
+  crocodile.src = "images/021-crocodile.png";
 
   // humans & things
 
   let rentner = new Image();
-  rentner.src = "images/right size/005-walker.png";
+  rentner.src = "images/005-walker.png";
 
   let baby = new Image();
-  baby.src = "images/right size/006-toddler.png";
+  baby.src = "images/006-toddler.png";
 
   let cucumber = new Image();
-  cucumber.src = "images/right size/016-cucumber.png";
+  cucumber.src = "images/016-cucumber.png";
 
   // audio
 
   let music = new Audio("audio/kitty-run-music.mp3");
-  let meow = new Audio("audio/Cat_Meowing_2-Mr_Smith-780889994.wav");
+  music.volume = 0.4
 
-  function playSoundVert() {
-    let snd = new Audio("audio/move4.wav");
-    snd.play();
-  }
+  let meow = new Audio("audio/Cat Scream-SoundBible.com-871191563.mp3");
+  meow.volume = 0.1
 
-  function playSoundHor() {
-    let sound = new Audio("audio/move2.wav");
-    sound.play();
+  let traffic = new Audio("audio/Traffic_Jam-Yo_Mama-1164700013.wav");
+  traffic.volume = 0.15
+
+  let riverSound = new Audio("audio/Stream Noise-SoundBible.com-866411702.wav");
+  riverSound.volume = 0.3
+
+  let winSound = new Audio("audio/Ta Da-SoundBible.com-1884170640.mp3")
+  winSound.volume = 0.3
+
+  let blop = new Audio("audio/Blop-Mark_DiAngelo-79054334.wav")
+
+  let buttonPush = new Audio("audio/Button Click Off-SoundBible.com-1730098776.mp3")
+
+  function playSoundWalk() {
+    let pop = new Audio("audio/Pop.m4a");
+    pop.play();
   }
 
   function playSoundTraffic() {
-    if (player.top() <= 540 && player.top() >= 330) {
-      let traffic = new Audio("audio/Traffic_Jam-Yo_Mama-1164700013.wav");
+
+    if (player.top() <   540 && player.top() >= 330) {
       traffic.play();
+    } 
+    
+    else {
+      traffic.pause();
+      traffic.currentTime = 0;
     }
   }
 
   function playSoundRiver() {
-    if (player.top() <= 240 && player.top() >= 60) {
-      let river = new Audio("audio/Stream Noise-SoundBible.com-866411702.wav");
-      river.play();
+
+    if (player.top() < 240 && player.top() >= 60) {
+      riverSound.play();
+    } 
+    
+    else {
+      riverSound.pause();
+      riverSound.currentTime = 0;
     }
   }
 
@@ -143,21 +165,22 @@ window.onload = () => {
   // player object
 
   let player = {
-    x: 360,
+    x: 420,
     y: 570,
     height: 28,
     width: 30,
     image: cat,
     lifes: 7,
-    time: 60,
+    time: 600,
     catsSaved: 0,
     gameOver: false,
+    gameRunning: false,
 
     moveUp: function() {
       if (player.y > 0) {
         player.y -= 30;
       }
-      playSoundVert();
+      playSoundWalk();
       playSoundTraffic();
       playSoundRiver();
     },
@@ -166,7 +189,7 @@ window.onload = () => {
       if (player.y < canvas.height - 40) {
         player.y += 30;
       }
-      playSoundVert();
+      playSoundWalk();
       playSoundTraffic();
       playSoundRiver();
     },
@@ -175,14 +198,14 @@ window.onload = () => {
       if (player.x > 0) {
         player.x -= 30;
       }
-      playSoundHor();
+      playSoundWalk();
     },
 
     moveRight: function() {
       if (player.x < canvas.width - 30) {
         player.x += 30;
       }
-      playSoundHor();
+      playSoundWalk();
     },
 
     update: function() {
@@ -226,6 +249,12 @@ window.onload = () => {
     die: function() {
       this.lifes--;
       meow.play();
+
+      riverSound.pause()
+      riverSound.currentTime = 0;
+
+      traffic.pause()
+      traffic.currentTime = 0;
 
       document.getElementById("lifesId").innerText = this.lifes;
 
@@ -371,15 +400,17 @@ window.onload = () => {
 
   function start() {
 
-    player.lifes = 7;
-    player.time = 60;
+    player.lifes = 3;
+    player.time = 600;
     player.catsSaved = 0;
     player.gameOver = false;
+    player.gameRunning = true;
 
     document.getElementById("timeId").innerText = player.time;
     document.getElementById("lifesId").innerText = player.lifes;
 
     music.play();
+    music.loop = true
     draw();
 
     // counter
@@ -396,7 +427,7 @@ window.onload = () => {
   // draw function
   function draw() {
 
-    if (player.gameOver === true) {
+    if (player.gameOver === true || player.time === 0) {
 
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, 810, 600);
@@ -408,13 +439,27 @@ window.onload = () => {
       ctx.fillText("*You suck! - The Cats", 480, 330);
 
       player.reset();
+
+      music.pause();
+      music.currentTime = 0;
+
+      riverSound.pause()
+      riverSound.currentTime = 0;
+
+      traffic.pause()
+      traffic.currentTime = 0;
+
+      homesArray.forEach(home => home.occupied = false)
+
+      player.gameRunning = false
+
       return;
     }
 
     frameCounter++;
 
     ctx.drawImage(background, 0, 0, 810, 600);
-    ctx.drawImage(waves, 20, 70, 32, 32);
+    ctx.drawImage(waves, 760, 180, 30, 30);
 
     ctx.drawImage(home, 180, 0, 28, 28);
     ctx.drawImage(home, 390, 0, 28, 28);
@@ -425,21 +470,15 @@ window.onload = () => {
     ctx.strokeRect(420, 0, 28, 28);
     ctx.strokeRect(630, 0, 28, 28);
 
-    // cats in homes
-
-    // homesArray.forEach(function(home) {
-    //   if (home.occupied === true) {
-    //     ctx.drawImage(home.img, home.left() + 25, home.top(), 30, 30);
-    //   }
-    // });
 
     player.update();
 
     homesArray.forEach(function(home) {
-      
+
       if (player.crashWith(home) && home.occupied === false) {
         player.catsSaved++;
         home.occupied = true;
+        blop.play();
         player.reset();
       }
 
@@ -482,6 +521,7 @@ window.onload = () => {
 
     // draw moving things
 
+
     if (frameCounter % 120 === 0) {
       // on river
       obstacleArray.push(new Floats(canvas.width, 60, wood, 2));
@@ -519,17 +559,18 @@ window.onload = () => {
       ctx.fillText("*We think your're great - The Cats", 430, 330);
 
       homesArray.forEach(home => home.occupied = false)
-
+      player.gameRunning = false;
+      music.pause()
+      music.currentTime = 0;
+      winSound.play()
       return;
     }
-
-    // setTimeout(function() {
     window.requestAnimationFrame(draw);
-    // }, 1000 / 24);
   }
 
   // keys
   document.onkeydown = function(e) {
+    if (player.gameRunning === true) {
     switch (e.keyCode) {
       case 37:
         player.moveLeft();
@@ -545,4 +586,5 @@ window.onload = () => {
         break;
     }
   };
+}
 };
