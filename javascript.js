@@ -20,7 +20,7 @@ window.onload = () => {
     410
   );
   ctx.fillText(
-    "have to bring 3 cats safely to their home on the top of the screen. Avoid vehicles at all cost, this will kill the cat (super bad karma). Then there is",
+    "have to bring 3 cats safely to their home on the top of the screen. Avoid vehicle at all cost, this will kill the cat (super bad karma). Then there is",
     85,
     420
   );
@@ -59,7 +59,7 @@ window.onload = () => {
   let home = new Image();
   home.src = "images/003-home.png";
 
-  // vehicles images
+  // vehicle images
 
   let motorcycle = new Image();
   motorcycle.src = "images/006-bike.png";
@@ -79,7 +79,7 @@ window.onload = () => {
   let deliveryTruck = new Image();
   deliveryTruck.src = "images/002-delivery-truck.png";
 
-  //floats images
+  //Vehicle images
 
   let luft = new Image();
   luft.src = "images/008-inflatable-60.png";
@@ -105,7 +105,10 @@ window.onload = () => {
   baby.src = "images/006-toddler.png";
 
   let cucumber = new Image();
-  cucumber.src = "images/016-cucumber.png";
+  cucumber.src = "images/017-cucumber-1.png";
+
+  let snake = new Image()
+  snake.src = "images/018-snake.png"
 
   // audio
 
@@ -171,8 +174,8 @@ window.onload = () => {
     width: 30,
     image: cat,
     lifes: 7,
-    time: 600,
-    catsSaved: 0,
+    time: 60,
+    catsSaved: 2,
     gameOver: false,
     gameRunning: false,
 
@@ -276,45 +279,16 @@ window.onload = () => {
   document.getElementById("timeId").innerText = player.time;
   document.getElementById("lifesId").innerText = player.lifes;
 
-  // vehicles class and constructor
+  // vehicle class and constructor, width 30 street, 60 river
 
-  class Vehicles {
-    constructor(posX, posY, img, speed) {
+  class Vehicle {
+    constructor(posX, posY, img, speed, width) {
       this.image = img;
       this.x = posX;
       this.y = posY;
       this.speed = speed;
+      this.width = width;
       this.height = 28;
-      this.width = 30;
-    }
-
-    top() {
-      return this.y;
-    }
-    left() {
-      return this.x;
-    }
-    bottom() {
-      return this.y + this.height;
-    }
-    right() {
-      return this.x + this.width;
-    }
-
-    update() {
-      ctx.drawImage(this.image, this.x, this.y);
-      this.x -= this.speed;
-    }
-  }
-
-  class Floats {
-    constructor(posX, posY, img, speed) {
-      this.image = img;
-      this.x = posX;
-      this.y = posY;
-      this.speed = speed;
-      this.height = 28;
-      this.width = 60;
     }
 
     top() {
@@ -400,9 +374,9 @@ window.onload = () => {
 
   function start() {
 
-    player.lifes = 3;
-    player.time = 600;
-    player.catsSaved = 0;
+    player.lifes = 7;
+    player.time = 60;
+    player.catsSaved = 1;
     player.gameOver = false;
     player.gameRunning = true;
 
@@ -410,15 +384,19 @@ window.onload = () => {
     document.getElementById("lifesId").innerText = player.lifes;
 
     music.play();
-    music.loop = true
+    music.loop = true;
     draw();
 
     // counter
 
     let counter = setInterval(interval => {
       player.time--;
-      if (player.time <= 0 || player.lifes === 0 || player.catsSaved === 3) {
+      if (player.lifes === 0 || player.catsSaved === 3) {
         clearInterval(counter);
+      }
+      if (player.time === 0) {
+        clearInterval(counter)
+        player.die()
       }
       document.getElementById("timeId").innerText = player.time;
     }, 1000);
@@ -470,8 +448,10 @@ window.onload = () => {
     ctx.strokeRect(420, 0, 28, 28);
     ctx.strokeRect(630, 0, 28, 28);
 
-
     player.update();
+
+
+    // check if cats in homes
 
     homesArray.forEach(function(home) {
 
@@ -519,34 +499,64 @@ window.onload = () => {
 
     player.update();
 
-    // draw moving things
 
+    // draw moving things (x, y, img, speed, width)
+    // upper lane: 330 - 390; lower lane: 450 - 510; river: 60 - 210
 
-    if (frameCounter % 120 === 0) {
-      // on river
-      obstacleArray.push(new Floats(canvas.width, 60, wood, 2));
-      obstacleArray.push(new Floats(canvas.width, 90, box, 6));
-      obstacleArray.push(new Floats(0, 120, luftLR, -3));
-      obstacleArray.push(new Floats(canvas.width, 150, wood, 4));
-      obstacleArray.push(new Floats(canvas.width, 180, box, 3));
-      obstacleArray.push(new Floats(0, 210, luftLR, -5));
+    if (frameCounter % (120 + (player.catsSaved * 40)) === 0) {
 
-      // on upper lane
-      obstacleArray.push(new Vehicles(canvas.width, 330, forklift, 2));
-      obstacleArray.push(new Vehicles(canvas.width, 390, motorcycleFast, 12));
-      obstacleArray.push(new Vehicles(canvas.width, 360, bus, 6));
-      obstacleArray.push(new Vehicles(canvas.width + 400, 360, deliveryTruck, 6));
-
-      // on lower lane
-      obstacleArray.push(new Vehicles(0, 450, car, -5));
-      obstacleArray.push(new Vehicles(0, 480, motorcycle, -3));
-      obstacleArray.push(new Vehicles(canvas.width, 510, deliveryTruck, 6));
-
-      // additional obstacles
-      // obstacleArray.push(new Vehicles(600, 30, rentner, 0));
-      // obstacleArray.push(new Vehicles(600, 300, cucumber, 2));
-      // obstacleArray.push(new Vehicles(0, 270, baby, -1));
+      // river
+      obstacleArray.push(new Vehicle(canvas.width, 60, wood, 2 + player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(canvas.width, 90, box, 3 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(0, 120, luftLR, -3 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(canvas.width + 150, 150, wood, 3 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(canvas.width, 180, box, 2 + player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(0, 210, luftLR, -4, 60));
     }
+
+    if (frameCounter % 60 === 0) {
+
+      obstacleArray.push(new Vehicle(0, 450, car, -5 - player.catsSaved, 30)); 
+      obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 12, 30));
+
+      obstacleArray.push(new Vehicle(canvas.width, 330, forklift, 3 + player.catsSaved, 30));
+      obstacleArray.push(new Vehicle(0, 480, motorcycle, -3, 30));   
+    }
+
+    if (frameCounter % 40 === 0) {
+
+      // upper lane
+      obstacleArray.push(new Vehicle(canvas.width, 390, bus, 6 + player.catsSaved, 30));
+      obstacleArray.push(new Vehicle(canvas.width + 400, 390, deliveryTruck, 6 - player.catsSaved, 30));
+
+      //on lower lane
+      obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 6 + player.catsSaved, 30));
+    }
+
+    if (frameCounter % 60 === 0 && player.catsSaved === 1) {      
+      obstacleArray.push(new Vehicle(320, 0, cucumber, 0, 30));
+      obstacleArray.push(new Vehicle(480, 0, cucumber, 0, 30));
+      
+    }
+
+    if (frameCounter % 960 === 0 && player.catsSaved > 0) {
+      obstacleArray.push(new Vehicle(canvas.width, 30, rentner, 0.5, 30));
+      obstacleArray.push(new Vehicle(0, 420, snake, -2, 30));
+      // obstacleArray.push(new Vehicle(500, 420, baby, 0, 30));
+    }
+
+
+
+
+    // if (frameCounter % 120 === 0 && player.catsSaved === 1) {
+    //   // additional obstacles
+    //   obstacleArray.push(new Vehicle(canvas.width + 50, 30, rentner, 1));
+    //   obstacleArray.push(new Vehicle(200, 0, cucumber, 0));
+    //   obstacleArray.push(new Vehicle(400, 0, cucumber, 0));
+    //   obstacleArray.push(new Vehicle(0, 270, baby, -1));
+    // }
+
+    // check win
 
     if (player.catsSaved === 3) {
       ctx.fillStyle = "white";
@@ -559,10 +569,14 @@ window.onload = () => {
       ctx.fillText("*We think your're great - The Cats", 430, 330);
 
       homesArray.forEach(home => home.occupied = false)
+
       player.gameRunning = false;
+      
       music.pause()
       music.currentTime = 0;
+      
       winSound.play()
+      
       return;
     }
     window.requestAnimationFrame(draw);
