@@ -56,3 +56,7 @@ li > a  {
 p > a {
     color: #444cfa !important;
 }
+
+p > span {
+  text-decoration: line-through;
+}

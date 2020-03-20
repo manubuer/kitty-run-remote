@@ -25,17 +25,17 @@ window.onload = () => {
     440
   );
   ctx.fillText(
-    "a river, cats hate water, so use floating items to get accross. Other thing to stay clear of: Cucumbers (ewww snakes), toddlers (loud and unpredic-",
+    "a river, cats hate water, so use floating items to get accross. Other thing to stay clear of: Cucumbers (snakes?), dogs (loud and unpredictive,",
     85,
     450
   );
   ctx.fillText(
-    "tive), old people (they are actually pretty nice but tend to be so freaking slow and block your way). What else? There are also snakes (ewww snakes)",
+    "old people (they are actually pretty nice but tend to be so freaking slow and block your way). What else? There are also real snakes as well as",
     85,
     460
   );
   ctx.fillText(
-    "as well as a time counter. If it hits 0 before the cats are safe, you screwed up. And yes, cats do have 7 lifes, just don't ask. Now, play already!",
+    "a time counter. If it hits 0 before the cats are safe, you screwed up. And yes, cats do have 7 lifes, just don't ask. Now, play already!",
     85,
     470
   );
@@ -269,9 +269,9 @@ window.onload = () => {
     },
 
     reset: function() {
-      this.x = 420;
-      this.y = 570;
-      this.gameOver = false;
+        this.x = 420;
+        this.y = 570;
+        this.gameOver = false;
     }
   };
 
@@ -398,7 +398,7 @@ window.onload = () => {
         gameRunning = false
       }
 
-      if (player.time === 0 || player.lifes === 0) {
+      if (player.time === 0 || player.lifes < 1) {
         clearInterval(counter)
         player.gameOver = true
       }
@@ -509,7 +509,6 @@ window.onload = () => {
     // upper lane: 330 - 390; lower lane: 450 - 510; river: 60 - 210
 
     if (frameCounter % (120 + (player.catsSaved * 40)) === 0) {
-
       obstacleArray.push(new Vehicle(canvas.width, 60, wood, 2 + player.catsSaved, 60));
       obstacleArray.push(new Vehicle(canvas.width, 90, box, 3 - player.catsSaved, 60));
       obstacleArray.push(new Vehicle(-60, 120, luftLR, -3 - player.catsSaved, 60));
@@ -522,7 +521,6 @@ window.onload = () => {
     }
 
     if (frameCounter % 60 === 0) {
-
       obstacleArray.push(new Vehicle(-200, 480, motorcycle, -6, 30));  
       obstacleArray.push(new Vehicle(0, 450, car, -4 - player.catsSaved, 30)); 
       obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 12, 30));
@@ -530,7 +528,6 @@ window.onload = () => {
     }
 
     if (frameCounter % 40 === 0) {
-
       obstacleArray.push(new Vehicle(canvas.width, 390, bus, 6 + player.catsSaved, 30));
       obstacleArray.push(new Vehicle(canvas.width + 400, 390, deliveryTruck, 6 - player.catsSaved, 30));
       obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 6 + player.catsSaved, 30));
@@ -547,11 +544,13 @@ window.onload = () => {
     }
       
     if (frameCounter % 900 === 0 && player.catsSaved > 1) {
-      obstacleArray.push(new Vehicle(canvas.width , 30, rentner, 0.4, 30));
+      obstacleArray.push(new Vehicle(canvas.width , 30, rentner, 0.8, 30));
+      obstacleArray.push(new Vehicle(420, 540, dog, 0, 30));
     }
 
-    if (frameCounter % 900 === 0 && player.catsSaved > 1) {
+    if (frameCounter % 120 === 0 && player.catsSaved > 1) {
       obstacleArray.push(new Vehicle(420, 540, dog, 0, 30));
+      obstacleArray.push(new Vehicle(240, 300, dog, 0, 30));
     }
 
 
