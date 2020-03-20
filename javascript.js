@@ -10,34 +10,34 @@ window.onload = () => {
   ctx.fillStyle = "black";
   ctx.font = "10px Arial";
   ctx.fillText(
-    "*This game is a dirty rip-off of Frogger. But it has cats in it, and this fact alone should legitimize its existence. There are brief instructions in the",
-    85,
-    400
-  );
-  ctx.fillText(
-    "panel on the right and you could just hit play, start the fun and skip this crap here. But you decided to read it, so here is the long version: You",
-    85,
-    410
-  );
-  ctx.fillText(
-    "have to bring 3 cats safely to their home on the top of the screen. Avoid vehicle at all cost, this will kill the cat (super bad karma). Then there is",
+    "*This game is a dirty rip-off of Frogger. But instead of a boring frog, you can now play a cat, which is way better, right?. There are brief instructions",
     85,
     420
   );
   ctx.fillText(
-    "a river, cats hate water, so use floating items to get accross. Other thing to stay clear of: Cucumbers (ewww snakes), toddlers (loud and unpredic-",
+    "in the panel on the right and you could just hit play, start the fun and skip this crap here. But you decided to read it, so here is the long version: You",
     85,
     430
   );
   ctx.fillText(
-    "tive), old people (they are actually pretty nice but tend to beso freaking slow and block your way. What else? There are also snakes (ewww snakes)",
+    "have to bring 3 cats safely to their home on the top of the screen. Avoid vehicles at all cost, they will kill the cat (super bad karma). Then there is",
     85,
     440
   );
   ctx.fillText(
-    "as well as a time counter. If it hits 0 before the cats are safe, you screwed up. And yes, cats do have 7 lifes, just don't ask. Now, play already!",
+    "a river, cats hate water, so use floating items to get accross. Other thing to stay clear of: Cucumbers (ewww snakes), toddlers (loud and unpredic-",
     85,
     450
+  );
+  ctx.fillText(
+    "tive), old people (they are actually pretty nice but tend to be so freaking slow and block your way). What else? There are also snakes (ewww snakes)",
+    85,
+    460
+  );
+  ctx.fillText(
+    "as well as a time counter. If it hits 0 before the cats are safe, you screwed up. And yes, cats do have 7 lifes, just don't ask. Now, play already!",
+    85,
+    470
   );
 
   document.getElementById("start-button").onclick = () => {
@@ -49,9 +49,6 @@ window.onload = () => {
 
   let background = new Image();
   background.src = "images/canvas-background.png";
-
-  let waves = new Image();
-  waves.src = "images/wave-inverted.png";
 
   let cat = new Image();
   cat.src = "images/cat-head-transp.png";
@@ -104,11 +101,11 @@ window.onload = () => {
   let rentner2 = new Image();
   rentner2.src = "images/005-walker-inverted.png"
 
-  let baby = new Image();
-  baby.src = "images/006-toddler.png";
+  let dog = new Image();
+  dog.src = "images/010-dog.png"
 
   let cucumber = new Image();
-  cucumber.src = "images/017-cucumber-1.png";
+  cucumber.src = "images/016-cucumber.png";
 
   let snake = new Image()
   snake.src = "images/018-snake.png"
@@ -265,15 +262,14 @@ window.onload = () => {
       document.getElementById("lifesId").innerText = this.lifes;
 
       if (this.lifes > 0) {
-        this.x = 360;
-        this.y = 570;
+        this.reset()
       } else {
         this.gameOver = true;
       }
     },
 
     reset: function() {
-      this.x = 360;
+      this.x = 420;
       this.y = 570;
       this.gameOver = false;
     }
@@ -394,14 +390,19 @@ window.onload = () => {
     // counter
 
     let counter = setInterval(interval => {
+
       player.time--;
-      if (player.lifes === 0 || player.catsSaved === 3) {
+
+      if (player.catsSaved === 3) {
         clearInterval(counter);
+        gameRunning = false
       }
-      if (player.time === 0) {
+
+      if (player.time === 0 || player.lifes === 0) {
         clearInterval(counter)
         player.gameOver = true
       }
+
       document.getElementById("timeId").innerText = player.time;
     }, 1000);
   }
@@ -426,6 +427,8 @@ window.onload = () => {
       riverSound.currentTime = 0;
       traffic.pause()
       traffic.currentTime = 0;
+    
+      meow.play()
 
       homesArray.forEach(home => home.occupied = false)
       player.catsSaved = 0
@@ -441,7 +444,6 @@ window.onload = () => {
     frameCounter++;
 
     ctx.drawImage(background, 0, 0, 810, 600);
-    ctx.drawImage(waves, 760, 180, 30, 30);
 
     ctx.drawImage(home, 180, 0, 28, 28);
     ctx.drawImage(home, 390, 0, 28, 28);
@@ -510,18 +512,21 @@ window.onload = () => {
 
       obstacleArray.push(new Vehicle(canvas.width, 60, wood, 2 + player.catsSaved, 60));
       obstacleArray.push(new Vehicle(canvas.width, 90, box, 3 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(0, 120, luftLR, -3 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(-60, 120, luftLR, -3 - player.catsSaved, 60));
       obstacleArray.push(new Vehicle(canvas.width + 150, 150, wood, 3 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(-180, 210, luftLR, -4, 60));
+    }
+
+    if (frameCounter % (240 + (player.catsSaved * 40)) === 0) {
       obstacleArray.push(new Vehicle(canvas.width, 180, box, 2 + player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(0, 210, luftLR, -4, 60));
     }
 
     if (frameCounter % 60 === 0) {
 
-      obstacleArray.push(new Vehicle(0, 450, car, -5 - player.catsSaved, 30)); 
+      obstacleArray.push(new Vehicle(-200, 480, motorcycle, -6, 30));  
+      obstacleArray.push(new Vehicle(0, 450, car, -4 - player.catsSaved, 30)); 
       obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 12, 30));
-      obstacleArray.push(new Vehicle(canvas.width, 330, forklift, 3 + player.catsSaved, 30));
-      obstacleArray.push(new Vehicle(0, 480, motorcycle, -3, 30));   
+      obstacleArray.push(new Vehicle(canvas.width, 330, forklift, 3 + player.catsSaved, 30)); 
     }
 
     if (frameCounter % 40 === 0) {
@@ -531,26 +536,24 @@ window.onload = () => {
       obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 6 + player.catsSaved, 30));
     }
 
-    if (frameCounter % 60 === 0 && player.catsSaved > 0) {      
-      obstacleArray.push(new Vehicle(320, 30, cucumber, 0, 30));
-      obstacleArray.push(new Vehicle(480, 30, cucumber, 0, 30));
-      obstacleArray.push(new Vehicle(480, 270, cucumber, 0, 30));
-    }
-
     if (frameCounter % 240 === 0 && player.catsSaved > 0) {
       obstacleArray.push(new Vehicle(-100, 420, snake, -3, 30));
     }
 
     if (frameCounter % 480 === 0 && player.catsSaved > 0) {
       obstacleArray.push(new Vehicle(-30, 240, snake, -4, 30));
+      obstacleArray.push(new Vehicle(320, 0, cucumber, 0, 30));
+      obstacleArray.push(new Vehicle(480, 0, cucumber, 0, 30));
+    }
+      
+    if (frameCounter % 900 === 0 && player.catsSaved > 1) {
+      obstacleArray.push(new Vehicle(canvas.width , 30, rentner, 0.4, 30));
     }
 
-    if (frameCounter % 240 === 0 && player.catsSaved > 1) {
-      obstacleArray.push(new Vehicle(300, 270, baby, 0, 30));
-      obstacleArray.push(new Vehicle(-100, 300, baby, -1, 30));
-      obstacleArray.push(new Vehicle(canvas.width + 200, 30, rentner, 0.4, 30));
-      obstacleArray.push(new Vehicle(-60, 30, rentner2, -0.3, 30));
+    if (frameCounter % 900 === 0 && player.catsSaved > 1) {
+      obstacleArray.push(new Vehicle(420, 540, dog, 0, 30));
     }
+
 
     // check win
 
@@ -572,6 +575,8 @@ window.onload = () => {
       music.currentTime = 0;
       
       winSound.play()
+
+      obstacleArray = []
       
       return;
     }
@@ -580,7 +585,7 @@ window.onload = () => {
 
   // keys
   document.onkeydown = function(e) {
-    if (player.gameRunning === true) {
+    if (player.gameRunning === true && e.keyCode > 36 && e.keyCode < 41) {
     switch (e.keyCode) {
       case 37:
         player.moveLeft();

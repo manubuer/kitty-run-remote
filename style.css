@@ -20,6 +20,15 @@ img {
   background-color: white !important;
 }
 
+#back-button {
+  background-color: #444cfa !important;
+
+}
+
+h1{
+  color: #444cfa;
+}
+
 h3 {
   color: #444cfa;
 }
@@ -37,5 +46,13 @@ h6 {
 }
 
 .credits {
-  font-size: 10px;
+  font-size: 16px;
+}
+
+li > a  {
+  color: #444cfa !important;
+}
+
+p > a {
+    color: #444cfa !important;
 }
