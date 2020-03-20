@@ -115,8 +115,17 @@ window.onload = () => {
   let music = new Audio("audio/kitty-run-music.mp3");
   music.volume = 0.4
 
-  let meow = new Audio("audio/Cat Scream-SoundBible.com-871191563.mp3");
-  meow.volume = 0.1
+  let hit = new Audio("audio/punch_or_whack_-Vladimir-403040765.mp3")
+  hit.volume = 0.1
+
+  let inWater = new Audio("audio/Slime Splash-SoundBible.com-1894179558.mp3")
+  inWater.volume = 0.2
+
+  let loseMelo = new Audio("audio/Sad_Trombone-Joe_Lamb-665429450.mp3")
+  loseMelo.volume = 0.2
+  
+  let tick = new Audio("audio/Tink.m4a")
+  tick.volume = 0.2
 
   let traffic = new Audio("audio/Traffic_Jam-Yo_Mama-1164700013.wav");
   traffic.volume = 0.15
@@ -130,6 +139,7 @@ window.onload = () => {
   let blop = new Audio("audio/Blop-Mark_DiAngelo-79054334.wav")
 
   let buttonPush = new Audio("audio/Button Click Off-SoundBible.com-1730098776.mp3")
+
 
   function playSoundWalk() {
     let pop = new Audio("audio/Pop.m4a");
@@ -251,7 +261,6 @@ window.onload = () => {
 
     die: function() {
       this.lifes--;
-      meow.play();
 
       riverSound.pause()
       riverSound.currentTime = 0;
@@ -265,6 +274,7 @@ window.onload = () => {
         this.reset()
       } else {
         this.gameOver = true;
+        loseMelo.play()
       }
     },
 
@@ -403,7 +413,11 @@ window.onload = () => {
         player.gameOver = true
       }
 
+      if (player.time < 10) {
+        tick.play()
+      }
       document.getElementById("timeId").innerText = player.time;
+
     }, 1000);
   }
 
@@ -428,7 +442,7 @@ window.onload = () => {
       traffic.pause()
       traffic.currentTime = 0;
     
-      meow.play()
+      hit.play()
 
       homesArray.forEach(home => home.occupied = false)
       player.catsSaved = 0
@@ -485,6 +499,7 @@ window.onload = () => {
           player.x -= item.speed;
         } else {
           player.die();
+          hit.play();
         }
       }
 
@@ -498,6 +513,7 @@ window.onload = () => {
     if (player.withinRiver(river)) {
       if (!crahesWithAnyItem) {
         player.die();
+        inWater.play();
       }
     }
 
@@ -508,7 +524,7 @@ window.onload = () => {
     // draw moving things (x, y, img, speed, width)
     // upper lane: 330 - 390; lower lane: 450 - 510; river: 60 - 210
 
-    if (frameCounter % (120 + (player.catsSaved * 40)) === 0) {
+    if (frameCounter % (120 + (player.catsSaved * 30)) === 0) {
       obstacleArray.push(new Vehicle(canvas.width, 60, wood, 2 + player.catsSaved, 60));
       obstacleArray.push(new Vehicle(canvas.width, 90, box, 3 - player.catsSaved, 60));
       obstacleArray.push(new Vehicle(-60, 120, luftLR, -3 - player.catsSaved, 60));
@@ -516,7 +532,7 @@ window.onload = () => {
       obstacleArray.push(new Vehicle(-180, 210, luftLR, -4, 60));
     }
 
-    if (frameCounter % (240 + (player.catsSaved * 40)) === 0) {
+    if (frameCounter % (240 + (player.catsSaved * 30)) === 0) {
       obstacleArray.push(new Vehicle(canvas.width, 180, box, 2 + player.catsSaved, 60));
     }
 
@@ -535,22 +551,25 @@ window.onload = () => {
 
     if (frameCounter % 240 === 0 && player.catsSaved > 0) {
       obstacleArray.push(new Vehicle(-100, 420, snake, -3, 30));
+      obstacleArray.push(new Vehicle(320, 0, cucumber, 0, 30));
+      obstacleArray.push(new Vehicle(480, 0, cucumber, 0, 30));
+    }
+
+    if (frameCounter % 60 === 0 && player.catsSaved > 0) {
+      obstacleArray.push(new Vehicle(160, 540, dog, 0, 30));
     }
 
     if (frameCounter % 480 === 0 && player.catsSaved > 0) {
       obstacleArray.push(new Vehicle(-30, 240, snake, -4, 30));
-      obstacleArray.push(new Vehicle(320, 0, cucumber, 0, 30));
-      obstacleArray.push(new Vehicle(480, 0, cucumber, 0, 30));
     }
       
-    if (frameCounter % 900 === 0 && player.catsSaved > 1) {
-      obstacleArray.push(new Vehicle(canvas.width , 30, rentner, 0.8, 30));
-      obstacleArray.push(new Vehicle(420, 540, dog, 0, 30));
+    if (frameCounter % 480 === 0 && player.catsSaved > 1) {
+      obstacleArray.push(new Vehicle(canvas.width , 30, rentner, 0.6, 30));
     }
 
     if (frameCounter % 120 === 0 && player.catsSaved > 1) {
-      obstacleArray.push(new Vehicle(420, 540, dog, 0, 30));
-      obstacleArray.push(new Vehicle(240, 300, dog, 0, 30));
+      obstacleArray.push(new Vehicle(540, 540, dog, 0, 30));
+      obstacleArray.push(new Vehicle(360, 300, dog, 0, 30));
     }
 
 
