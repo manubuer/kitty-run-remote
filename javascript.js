@@ -410,6 +410,7 @@ window.onload = () => {
 
       if (player.time === 0 || player.lifes < 1) {
         clearInterval(counter)
+        loseMelo.play()
         player.gameOver = true
       }
 
@@ -537,16 +538,16 @@ window.onload = () => {
     }
 
     if (frameCounter % 60 === 0) {
-      obstacleArray.push(new Vehicle(-200, 480, motorcycle, -6, 30));  
-      obstacleArray.push(new Vehicle(0, 450, car, -4 - player.catsSaved, 30)); 
-      obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 12, 30));
+      obstacleArray.push(new Vehicle(-200, 480, motorcycle, -5, 30));  
+      obstacleArray.push(new Vehicle(0, 450, car, -3 - player.catsSaved, 30)); 
+      obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 10, 30));
       obstacleArray.push(new Vehicle(canvas.width, 330, forklift, 3 + player.catsSaved, 30)); 
     }
 
     if (frameCounter % 40 === 0) {
-      obstacleArray.push(new Vehicle(canvas.width, 390, bus, 6 + player.catsSaved, 30));
+      obstacleArray.push(new Vehicle(canvas.width, 390, bus, 5 + player.catsSaved, 30));
       obstacleArray.push(new Vehicle(canvas.width + 400, 390, deliveryTruck, 6 - player.catsSaved, 30));
-      obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 6 + player.catsSaved, 30));
+      obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 4 + player.catsSaved, 30));
     }
 
     if (frameCounter % 240 === 0 && player.catsSaved > 0) {
