@@ -525,16 +525,16 @@ window.onload = () => {
     // draw moving things (x, y, img, speed, width)
     // upper lane: 330 - 390; lower lane: 450 - 510; river: 60 - 210
 
-    if (frameCounter % (150 + (player.catsSaved * 20)) === 0) {
-      obstacleArray.push(new Vehicle(canvas.width, 60, wood, 3 + player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(canvas.width, 90, box, 2 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(-60, 120, luftLR, -2 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(canvas.width + 150, 150, wood, 2 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(-180, 210, luftLR, -3, 60));
+    if (frameCounter % (200 + (player.catsSaved * 20)) === 0) {
+      obstacleArray.push(new Vehicle(canvas.width, 60, wood, 3, 60));
+      obstacleArray.push(new Vehicle(canvas.width, 90, box, 1, 60));
+      obstacleArray.push(new Vehicle(-60, 120, luftLR, -3, 60));
+      obstacleArray.push(new Vehicle(canvas.width + 100, 150, wood, 5, 60));
+      obstacleArray.push(new Vehicle(-180, 210, luftLR, -2, 60));
     }
 
-    if (frameCounter % (200 + (player.catsSaved * 30)) === 0) {
-      obstacleArray.push(new Vehicle(canvas.width, 180, box, 2 + player.catsSaved, 60));
+    if (frameCounter % (160 + (player.catsSaved * 30)) === 0) {
+      obstacleArray.push(new Vehicle(canvas.width, 180, box, 4, 60));
     }
 
     if (frameCounter % 120 === 0) {
