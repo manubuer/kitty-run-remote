@@ -525,32 +525,32 @@ window.onload = () => {
     // draw moving things (x, y, img, speed, width)
     // upper lane: 330 - 390; lower lane: 450 - 510; river: 60 - 210
 
-    if (frameCounter % (200 + (player.catsSaved * 20)) === 0) {
-      obstacleArray.push(new Vehicle(canvas.width, 60, wood, 2 + player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(canvas.width, 90, box, 3 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(-60, 120, luftLR, -3 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(canvas.width + 150, 150, wood, 3 - player.catsSaved, 60));
-      obstacleArray.push(new Vehicle(-180, 210, luftLR, -4, 60));
+    if (frameCounter % (150 + (player.catsSaved * 20)) === 0) {
+      obstacleArray.push(new Vehicle(canvas.width, 60, wood, 3 + player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(canvas.width, 90, box, 2 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(-60, 120, luftLR, -2 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(canvas.width + 150, 150, wood, 2 - player.catsSaved, 60));
+      obstacleArray.push(new Vehicle(-180, 210, luftLR, -3, 60));
     }
 
-    if (frameCounter % (300 + (player.catsSaved * 30)) === 0) {
+    if (frameCounter % (200 + (player.catsSaved * 30)) === 0) {
       obstacleArray.push(new Vehicle(canvas.width, 180, box, 2 + player.catsSaved, 60));
     }
 
-    if (frameCounter % 150 === 0) {
+    if (frameCounter % 120 === 0) {
       obstacleArray.push(new Vehicle(-200, 480, motorcycle, -5, 30));  
       obstacleArray.push(new Vehicle(0, 450, car, -3 - player.catsSaved, 30)); 
       obstacleArray.push(new Vehicle(canvas.width, 360, motorcycleFast, 10, 30));
       obstacleArray.push(new Vehicle(canvas.width, 330, forklift, 3 + player.catsSaved, 30)); 
     }
 
-    if (frameCounter % 120 === 0) {
+    if (frameCounter % 100 === 0) {
       obstacleArray.push(new Vehicle(canvas.width, 390, bus, 5 + player.catsSaved, 30));
       obstacleArray.push(new Vehicle(canvas.width + 400, 390, deliveryTruck, 6 - player.catsSaved, 30));
       obstacleArray.push(new Vehicle(canvas.width, 510, deliveryTruck, 4 + player.catsSaved, 30));
     }
 
-    if (frameCounter % 300 === 0 && player.catsSaved > 0) {
+    if (frameCounter % 250 === 0 && player.catsSaved > 0) {
       obstacleArray.push(new Vehicle(-100, 420, snake, -3, 30));
       obstacleArray.push(new Vehicle(320, 0, cucumber, 0, 30));
       obstacleArray.push(new Vehicle(480, 0, cucumber, 0, 30));
